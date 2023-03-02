@@ -2,10 +2,11 @@ package GUIusers;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -13,9 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Usuarios.Usuario;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CRUD_Users {
 
@@ -137,7 +135,74 @@ public class CRUD_Users {
 		textFieldContrasena.setColumns(10);
 		
 		//Acciones
-		btnAgregarUsuario.addActionListener(new ActionListener() {
+		
+		btnEditarUsuario.addActionListener(new ActionListener() {		//Editar usuario
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				try {
+					int ElementListIndex = list.getSelectedIndex();
+					
+					String Nombre = textFieldNombre.getText().toString();
+					String Correo = textFieldCorreo.getText().toString();
+					String Contrasena = textFieldContrasena.getText().toString();
+					
+					Usuario objUsuario = new Usuario(Nombre, Correo, Contrasena);
+					
+					if (Nombre.isEmpty() || Correo.isEmpty() || Contrasena.isEmpty()) {
+						
+						JOptionPane.showMessageDialog(frame_1, "Debe de rellenar todos los campos para poder editar al usuario!");
+					} else {
+					
+						ModelList.remove(ElementListIndex);
+						ModelList.addElement(objUsuario);
+						
+						JOptionPane.showMessageDialog(frame_1, "Usuario editado de forma exitosa!");
+					}
+					
+					textFieldNombre.setText(null);
+					textFieldCorreo.setText(null);
+					textFieldContrasena.setText(null);
+					
+				} catch (Exception ex) {
+					
+					System.out.print("Lo sentimos, ha ocurrido un error: " + ex);
+					JOptionPane.showMessageDialog(frame_1, "Ha ocurrido un error, no se ha podido editar el usuario!");
+				}
+			}
+		});
+		
+		
+		btnEliminarUsuario.addActionListener(new ActionListener() {		//Eliminar usuario seleccionandolo en la lista
+			public void actionPerformed(ActionEvent e) {
+				Usuario objUsuario = new Usuario();
+				
+				try {
+					Object ElementList = new Object();
+					ElementList = list.getSelectedValue();
+					
+					if (ElementList != null) {
+						
+						ModelList.removeElement(ElementList);
+						
+						JOptionPane.showMessageDialog(frame_1, "Usuario eliminado con exitos!");
+					} else {
+						JOptionPane.showMessageDialog(frame_1, "Error, debe de elegir un usuario de la lista para poder eliminar!");
+					}
+					
+					
+				}catch (Exception ex) {
+					
+					System.out.print("Lo sentimos, ha ocurrido un error: " + ex);
+					JOptionPane.showMessageDialog(frame_1, "Ha ocurrido un error, no se ha podido eliminar el usuario!");
+				}
+				
+			}
+		});
+		
+		
+		
+		btnAgregarUsuario.addActionListener(new ActionListener() {		//Agregar usuario y mostrandolo en la lista
 			public void actionPerformed(ActionEvent e) {
 				
 				String Nombre, Correo, Contrasena;
